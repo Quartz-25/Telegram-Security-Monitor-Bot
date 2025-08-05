@@ -58,7 +58,7 @@ const start = async () => {
   });
 
   const IP_BLOCK_EXCHANGE_NAME = 'ip_block_exchange';
-  const IP_BLOCK_QUEUE_NAME = 'ip_block_notifications_queue';
+  const IP_BLOCK_QUEUE_NAME = 'blocked_ips_queue';
   const IP_BLOCK_ROUTING_KEY = 'ip.blocked';
 
   if (channel.consume) {
@@ -70,7 +70,7 @@ const start = async () => {
       if (message) {
         try {
           const data = JSON.parse(message.content.toString());
-          await handleMessage(MainConsumers.ip_block_notification, data);
+          await handleMessage(MainConsumers.blocked_ip, data);
           channel.consume?.ack(message);
         } catch (error) {
           logger.error(`IP block consumer parse message or handle error: ${error}`);
@@ -84,7 +84,7 @@ const start = async () => {
   }
 
   const INVALID_REQUEST_EXCHANGE_NAME = 'invalid_request_exchange';
-  const INVALID_REQUEST_QUEUE_NAME = 'invalid_request_notifications_queue';
+  const INVALID_REQUEST_QUEUE_NAME = 'invalid_requests_queue';
   const INVALID_REQUEST_ROUTING_KEY = 'invalid.request.detected';
 
   if (channel.consume) {
@@ -96,7 +96,7 @@ const start = async () => {
       if (message) {
         try {
           const data = JSON.parse(message.content.toString());
-          await handleMessage(MainConsumers.invalid_request_notification, data);
+          await handleMessage(MainConsumers.invalid_request, data);
           channel.consume?.ack(message);
         } catch (error) {
           logger.error(`Invalid request consumer parse message or handle error: ${error}`);
@@ -113,9 +113,9 @@ const start = async () => {
 const handleMessage = async (queue: MainConsumers, data: any) => {
   console.log('new queue message <=====> ', queue);
   try {
-    if (queue === MainConsumers.ip_block_notification) {
+    if (queue === MainConsumers.blocked_ip) {
       await blockedMsg(data)
-    } else if (queue === MainConsumers.invalid_request_notification) {
+    } else if (queue === MainConsumers.invalid_request) {
       await invalidReqMsg(data)
     }
   } catch (error) {
