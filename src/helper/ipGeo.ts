@@ -1,7 +1,7 @@
 // src/helper/ipGeo.ts
 
-import axios from 'axios'; // You might need to install axios: npm install axios or yarn add axios
-import logger from './logging'; // Assuming your logger is here
+import axios from 'axios';
+import logger from './logging';
 
 interface IpGeoResponse {
     status: 'success' | 'fail';
@@ -18,10 +18,10 @@ interface IpGeoResponse {
     org?: string;
     as?: string;
     query: string;
-    message?: string; // Error message if status is 'fail'
+    message?: string;
 }
 
-const IP_API_BASE_URL = 'http://ip-api.com/json/'; // Free, public API for IP geolocation
+const IP_API_BASE_URL = 'http://ip-api.com/json/';
 
 /**
  * @function getIpCountry
@@ -30,7 +30,6 @@ const IP_API_BASE_URL = 'http://ip-api.com/json/'; // Free, public API for IP ge
  * @returns {Promise<string | null>} - The country name if successful, otherwise null.
  */
 export async function getIpCountry(ip: string): Promise<string | null> {
-    // For localhost (::1 or 127.0.0.1), ip-api.com returns private range, so return null or a specific value
     if (ip === '::1' || ip === '127.0.0.1') {
         return 'Localhost';
     }
