@@ -78,7 +78,9 @@ yarn start
 The bot can send two types of messages. Below are examples of how the alerts will appear in your Telegram channel.
 
 **Message Type 1:**
+
 ![Sample of the first message type](assets/screenshot-1.png)
 
 **Message Type 2:**
+
 ![Sample of the second message type](assets/screenshot-2.png)
